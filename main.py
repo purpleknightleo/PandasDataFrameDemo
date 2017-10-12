@@ -17,16 +17,19 @@ def get_df_1():
 def display():
     df = get_df_1()
 
+    print(df.info())  # basic info
+    split()
+
+    print(df.shape)  # dimension as (n,m), rows = df.shape[0], columns = df.shape[1]
+    split()
+
     print(df.head(4))  # display head rows, default is 5
     split()
 
     print(df.tail())  # display tail rows
     split()
 
-    print(df.describe())  # display basic info
-    split()
-
-    print(df.shape)  # dimension as (n,m), rows = df.shape[0], columns = df.shape[1]
+    print(df.describe())  # display basic stats
     split()
 
     print(df.values)  # all values
@@ -126,10 +129,26 @@ def drop_columns():
     split()
 
 
+# change value
+def change_val():
+    df = get_df_1()
+
+    # change value to NaN with conditions
+    df.loc[df['b'] > 8, 'a'] = np.nan  # change column 'a' value where column 'b' value greater than 8
+    print(df)
+    split()
+
+    # apply a function to specified column values
+    df['b'] = df['b'].apply(lambda x: x * 10, 1)  # apply() returns series/dataframe, not inplace
+    print(df)
+    split()
+
+
 split()
 # display()
-select_rows()
+# select_rows()
 # select_columns()
 # get_position()
 # drop_rows()
 # drop_columns()
+change_val()
