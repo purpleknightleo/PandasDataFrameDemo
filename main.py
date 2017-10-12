@@ -26,7 +26,7 @@ def display():
     print(df.describe())  # display basic info
     split()
 
-    print(df.shape)  # shape as (n,m), rows = df.shape[0], columns = df.shape[1]
+    print(df.shape)  # dimension as (n,m), rows = df.shape[0], columns = df.shape[1]
     split()
 
     print(df.values)  # all values
@@ -45,6 +45,18 @@ def select_rows():
 
     # select rows by row labels
     df_new = df.loc[['LN', 'BJ']]
+    print(df_new)
+    print(type(df_new))
+    split()
+
+    # select rows by column values with multiple conditions
+    df_new = df.query('b>8 & c<18')  # all rows with value of column 'b' greater than 8 and 'c' less than 18
+    print(df_new)
+    print(type(df_new))
+    split()
+
+    # select rows by column values with multiple conditions
+    df_new = df.query('b>14 | c<6')  # all rows with value of column 'b' greater than 14 or 'c' less than 6
     print(df_new)
     print(type(df_new))
     split()
@@ -116,8 +128,8 @@ def drop_columns():
 
 split()
 # display()
-# select_rows()
+select_rows()
 # select_columns()
 # get_position()
 # drop_rows()
-drop_columns()
+# drop_columns()
