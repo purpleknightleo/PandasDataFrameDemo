@@ -2,9 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 import numpy as np
 
-
-def split():
-    print('---------------------------')
+from common import split
 
 
 # construct a dataframe with row/column indices
@@ -52,7 +50,7 @@ def select_rows():
     print(type(df_new))
     split()
 
-    # select rows by row index labels
+    # select 'LN','BJ' rows by row index labels
     df_new = df.loc[['LN', 'BJ']]
     print(df_new)
     print(type(df_new))
@@ -75,16 +73,41 @@ def select_rows():
 def select_columns():
     df = get_df_1()
 
-    # select [1,2) columns by column positions
+    # select [1,3) columns by column positions
     df_new = df.iloc[:, 1:3]
     print(df_new)
     print(type(df_new))
     split()
 
-    # select columns by column index labels
+    # select b,c columns by column index labels
     df_new = df.loc[:, ['b', 'c']]
     print(df_new)
     print(type(df_new))
+    split()
+
+
+# select cell
+def select_cell():
+    df = get_df_1()
+
+    # select a cell by index labels via .at, which is faster than .loc
+    a = df.at['JS', 'b']
+    print('df["JS"]["b"] = %d' % a)
+    split()
+
+    # equivalent to .at, but slower
+    a = df.loc['JS', 'b']
+    print('df["JS"]["b"] = %d' % a)
+    split()
+
+    # select a cell by positions via .iat, which is faster than .iloc
+    a = df.iat[3, 1]
+    print('df[3][1] = %d' % a)
+    split()
+
+    # equivalent to .iloc, but slower
+    a = df.iloc[3, 1]
+    print('df[3][1] = %d' % a)
     split()
 
 
@@ -139,6 +162,16 @@ def drop_columns():
 def change_val():
     df = get_df_1()
 
+    # change a cell value by index labels
+    df.at['JS', 'b'] = 888888  # equivalent to .loc
+    print(df)
+    split()
+
+    # change a cell value by positions
+    df.iat[3, 1] = 888888  # equivalent to .iloc
+    print(df)
+    split()
+
     # change value to NaN with conditions
     df.loc[df['b'] > 8, 'a'] = np.nan  # change column 'a' value where column 'b' value greater than 8
     print(df)
@@ -146,6 +179,24 @@ def change_val():
 
     # apply a function to specified column values
     df['b'] = df['b'].apply(lambda x: x * 10, 1)  # apply() returns series/dataframe, not inplace
+    print(df)
+    split()
+
+
+# modify index names/labels
+def modify_idx_label():
+    df = get_df_1()
+
+    # modify row names
+    df.index.set_names('Prov.', inplace=True)
+
+    # modify row index label
+    df.rename_axis({'SH': 'HLJ'}, inplace=True)  # default return a new df if inplace is not set
+    print(df)
+    split()
+
+    # modify column index label
+    df.rename_axis({'b': 'B', 'c': 'cc'}, inplace=True, axis=1)
     print(df)
     split()
 
@@ -164,6 +215,11 @@ def sort():
     print(df_new)
     split()
 
+    # sort by column index label in descending order
+    df_new = df.sort_index(ascending=False, axis=1)
+    print(df_new)
+    split()
+
     # sort by column value in descending order
     df_new = df.sort_values('b', ascending=False)
     print(df_new)
@@ -174,10 +230,12 @@ def run():
     # display()
     # select_rows()
     # select_columns()
+    # select_cell()
     # get_position()
     # drop_rows()
     # drop_columns()
     # change_val()
+    modify_idx_label()
     # sort()
 
     pass

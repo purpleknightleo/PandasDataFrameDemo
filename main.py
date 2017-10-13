@@ -4,11 +4,7 @@ import numpy as np
 
 import advanced
 import basic
-
-
-def split():
-    print('---------------------------')
-
+from common import split
 
 split()
 
